@@ -12,7 +12,7 @@ output: html_document:
 
 The primary goal of this report is to find a appropriate model to correctly predict the outcomes of the Weight Lifting Exercise dataset. The WLE dataset comes from Velloso, E. et al. [**R. 1**].
 
-We start by reading the data into R and perform some basic explorarations.
+We start by reading the data into R and perform some basic explorations.
 
 ```r
 pmldata <- read.csv("pml-training.csv",
@@ -21,7 +21,7 @@ pmldata <- read.csv("pml-training.csv",
                       quote = "\"", header=TRUE, fill = TRUE)
 ```
 
-The dimension of the whole dataset
+The dimension of the whole dataset is
 
 ```r
 dim(pmldata)
@@ -31,7 +31,7 @@ dim(pmldata)
 ## [1] 19622   160
 ```
 
-The prediction is to output classification results. So, we must make sure the classe column is of factor type.
+The prediction is to return classification results. So, we must make sure the column *classe* is of factor type.
 
 ```r
 pmldata$classe <- factor(pmldata$classe)
@@ -62,14 +62,14 @@ dim(training)
 ## [1] 15699   160
 ```
 
-Both selection of model and method for feature extraction are also inspired by the paper [**R. 1**]. We use Random Forest method to build our model. The original method for feature extraction is based on the followings rules:  
+Both the selection of model and the method for feature extraction are also inspired by the paper [**R. 1**]. We use Random Forest method to build the model. The original method for feature extraction is based on the followings rules:  
 1. In the belt, were selected the mean and variance of the roll, maximum, range and variance of the accelerometer vector, variance of the gyro and variance of the magnetometer.  
 2. the  arm,  the  variance  of  the  accelerometer  vector  and  the maximum and minimum of the magnetometer were selected.  
 3. In the dumbbell, the selected features were the maximum of the  acceleration,  variance  of  the  gyro  and  maximum  and minimum of the magnetometer, while in the glove, the sum of  the  pitch  and  the  maximum  and  minimum  of  the  gyro were selected.  
 
-Instead of using max, min, sum, mean, var and range of the measured data to build the model, we try an alternative method. For max, min, sum and range values, we simply use the measured data as equivalent ones. For var values, we use the square of the measured data as equivalent ones. For example, in the belt, we use roll_belt instead of mean(roll_belt) in specific time window. Also, in the belt, we use roll_belt^2 instead of var(roll_belt) in specific time window. Our simplified assumption is based on the idea that var is linear equivalent to square.  
+Instead of using max, min, sum, mean, var and range of the measured data to build the model, we try an alternative approach. For max, min, sum and range values, we simply use the measured data as equivalent ones. For var values, we use the square of the measured data as equivalent ones. For example, in the belt, we use roll_belt instead of mean(roll_belt) in specific time window. Also, in the belt, we use roll_belt^2 instead of var(roll_belt) in specific time window. Our simplified assumption is based on the idea that var is linear equivalent to square.  
 
-Following is the model call(to save processing time, we load the saved one.)
+Following is the model call(to save processing time, we load the saved one.) and the detailed model is in **a. 1**.
 
 ```r
 modFit_rf$call
@@ -102,12 +102,12 @@ modFit_rf$finalModel$confusion
 ## E    0    2    5    5 2874 0.004158004
 ```
 
-We investigate the mode with testing data
+We investigate the model with the testing data and check it with confusion matrix.
 
 ```r
 pred_rf <- predict(modFit_rf, testing)
 ```
- and check it with confusion matrix.
+
 
 ```r
 # Confusion matrix
@@ -147,7 +147,7 @@ confusionMatrix(pred_rf, testing$classe)
 ## Detection Prevalence   0.2855   0.1922   0.1779   0.1614   0.1830
 ## Balanced Accuracy      0.9955   0.9877   0.9908   0.9885   0.9979
 ```
-The error rates approximately match with error rates in the training data. The model's accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the sensitivity and specificity for each outcome class are both high(>= 98%). We can conclude that the model's performance is acceptable. Let's proceed to the final step to predict the test data.
+The error rates approximately match the error rates in the training data. The model's accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the sensitivity and specificity for each outcome class are both high(>= 98%). We can conclude that the model's performance is acceptable. Let's proceed to the final step to predict the test data.
 
 Now, we load the test data 
 

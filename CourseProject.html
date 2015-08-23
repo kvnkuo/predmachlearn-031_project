@@ -203,7 +203,7 @@ hr {
 <body>
 <p>The primary goal of this report is to find a appropriate model to correctly predict the outcomes of the Weight Lifting Exercise dataset. The WLE dataset comes from Velloso, E. et al. [<strong>R. 1</strong>].</p>
 
-<p>We start by reading the data into R and perform some basic explorarations.</p>
+<p>We start by reading the data into R and perform some basic explorations.</p>
 
 <pre><code class="r">pmldata &lt;- read.csv(&quot;pml-training.csv&quot;,
                       dec=&quot;.&quot;, stringsAsFactors = FALSE, 
@@ -211,7 +211,7 @@ hr {
                       quote = &quot;\&quot;&quot;, header=TRUE, fill = TRUE)
 </code></pre>
 
-<p>The dimension of the whole dataset</p>
+<p>The dimension of the whole dataset is</p>
 
 <pre><code class="r">dim(pmldata)
 </code></pre>
@@ -219,7 +219,7 @@ hr {
 <pre><code>## [1] 19622   160
 </code></pre>
 
-<p>The prediction is to output classification results. So, we must make sure the classe column is of factor type.</p>
+<p>The prediction is to return classification results. So, we must make sure the column <em>classe</em> is of factor type.</p>
 
 <pre><code class="r">pmldata$classe &lt;- factor(pmldata$classe)
 </code></pre>
@@ -244,14 +244,14 @@ testing &lt;- pmldata[-inTrain,]
 <pre><code>## [1] 15699   160
 </code></pre>
 
-<p>Both selection of model and method for feature extraction are also inspired by the paper [<strong>R. 1</strong>]. We use Random Forest method to build our model. The original method for feature extraction is based on the followings rules:<br/>
+<p>Both the selection of model and the method for feature extraction are also inspired by the paper [<strong>R. 1</strong>]. We use Random Forest method to build the model. The original method for feature extraction is based on the followings rules:<br/>
 1. In the belt, were selected the mean and variance of the roll, maximum, range and variance of the accelerometer vector, variance of the gyro and variance of the magnetometer.<br/>
 2. the  arm,  the  variance  of  the  accelerometer  vector  and  the maximum and minimum of the magnetometer were selected.<br/>
 3. In the dumbbell, the selected features were the maximum of the  acceleration,  variance  of  the  gyro  and  maximum  and minimum of the magnetometer, while in the glove, the sum of  the  pitch  and  the  maximum  and  minimum  of  the  gyro were selected.  </p>
 
-<p>Instead of using max, min, sum, mean, var and range of the measured data to build the model, we try an alternative method. For max, min, sum and range values, we simply use the measured data as equivalent ones. For var values, we use the square of the measured data as equivalent ones. For example, in the belt, we use roll_belt instead of mean(roll_belt) in specific time window. Also, in the belt, we use roll_belt<sup>2</sup> instead of var(roll_belt) in specific time window. Our simplified assumption is based on the idea that var is linear equivalent to square.  </p>
+<p>Instead of using max, min, sum, mean, var and range of the measured data to build the model, we try an alternative approach. For max, min, sum and range values, we simply use the measured data as equivalent ones. For var values, we use the square of the measured data as equivalent ones. For example, in the belt, we use roll_belt instead of mean(roll_belt) in specific time window. Also, in the belt, we use roll_belt<sup>2</sup> instead of var(roll_belt) in specific time window. Our simplified assumption is based on the idea that var is linear equivalent to square.  </p>
 
-<p>Following is the model call(to save processing time, we load the saved one.)</p>
+<p>Following is the model call(to save processing time, we load the saved one.) and the detailed model is in <strong>a. 1</strong>.</p>
 
 <pre><code class="r">modFit_rf$call
 </code></pre>
@@ -280,12 +280,10 @@ testing &lt;- pmldata[-inTrain,]
 ## E    0    2    5    5 2874 0.004158004
 </code></pre>
 
-<p>We investigate the mode with testing data</p>
+<p>We investigate the model with the testing data and check it with confusion matrix.</p>
 
 <pre><code class="r">pred_rf &lt;- predict(modFit_rf, testing)
 </code></pre>
-
-<p>and check it with confusion matrix.</p>
 
 <pre><code class="r"># Confusion matrix
 confusionMatrix(pred_rf, testing$classe)
@@ -324,7 +322,7 @@ confusionMatrix(pred_rf, testing$classe)
 ## Balanced Accuracy      0.9955   0.9877   0.9908   0.9885   0.9979
 </code></pre>
 
-<p>The error rates approximately match with error rates in the training data. The model&#39;s accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the sensitivity and specificity for each outcome class are both high(&gt;= 98%). We can conclude that the model&#39;s performance is acceptable. Let&#39;s proceed to the final step to predict the test data.</p>
+<p>The error rates approximately match the error rates in the training data. The model&#39;s accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the sensitivity and specificity for each outcome class are both high(&gt;= 98%). We can conclude that the model&#39;s performance is acceptable. Let&#39;s proceed to the final step to predict the test data.</p>
 
 <p>Now, we load the test data </p>
 
