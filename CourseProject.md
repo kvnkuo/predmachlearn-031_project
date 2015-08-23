@@ -10,10 +10,6 @@ output: html_document:
 ---
 
 
-```
-## Loading required package: lattice
-## Loading required package: ggplot2
-```
 The primary goal of this report is to find a appropriate model to correctly predict the outcomes of the Weight Lifting Exercise dataset. The WLE dataset comes from Velloso, E. et al. [**R. 1**].
 
 We start by reading the data into R and perform some basic explorarations.
@@ -151,7 +147,7 @@ confusionMatrix(pred_rf, testing$classe)
 ## Detection Prevalence   0.2855   0.1922   0.1779   0.1614   0.1830
 ## Balanced Accuracy      0.9955   0.9877   0.9908   0.9885   0.9979
 ```
-The error rates approximately match with error rates in the traing data. The accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the Sensitivity and Specificity for each outcome class are both high. We can conclude that the model's performance is acceptable. Let's proceed to the final step, to predict the test data.
+The error rates approximately match with error rates in the training data. The model's accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the sensitivity and specificity for each outcome class are both high(>= 98%). We can conclude that the model's performance is acceptable. Let's proceed to the final step to predict the test data.
 
 Now, we load the test data 
 
@@ -165,15 +161,7 @@ and perform the prediction.
 
 ```r
 pred_rf_test <- predict(modFit_rf, pmldata_test)
-```
 
-```
-## Loading required package: randomForest
-## randomForest 4.6-10
-## Type rfNews() to see new features/changes/bug fixes.
-```
-
-```r
 pred_rf_test
 ```
 
@@ -182,7 +170,8 @@ pred_rf_test
 ## Levels: A B C D E
 ```
 
-Note: We also use Conditional Inference Trees method to build our model **a. 2**, **a. 3**. The predicted outcomes are no as good as the aboves. However, its predicted test results are the same as our Random Forest based model.           
+Note: We also use Conditional Inference Trees method to build our model as in **a. 2**, **a. 3**. The model's accuracy is about 89.6% with 95% C.I. from 88.6% to 90.5%). The sensitivity of Class B, Class C and Class D are all less than 90%, though the specificity are all larger than 96%. The predicted outcomes are not as good as the above ones. However, the predicted test results are the same as the results from the Random Forest based model.  
+
 ### Appendix
 **a. 1** The main prediction model (Random Forest)
 
@@ -288,27 +277,7 @@ confusionMatrix(pred_ctree, testing$classe)
 
 ```r
 pred_ctree_test <- predict(modFit_ctree, pmldata_test)
-```
 
-```
-## Loading required package: party
-## Loading required package: grid
-## Loading required package: mvtnorm
-## Loading required package: modeltools
-## Loading required package: stats4
-## Loading required package: strucchange
-## Loading required package: zoo
-## 
-## Attaching package: 'zoo'
-## 
-## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric
-## 
-## Loading required package: sandwich
-```
-
-```r
 pred_ctree_test
 ```
 

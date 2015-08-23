@@ -86,7 +86,7 @@ pred_rf <- predict(modFit_rf, testing)
 # Confusion matrix
 confusionMatrix(pred_rf, testing$classe)
 ```
-The error rates approximately match with error rates in the traing data. The accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the Sensitivity and Specificity for each outcome class are both high. We can conclude that the model's performance is acceptable. Let's proceed to the final step, to predict the test data.
+The error rates approximately match with error rates in the training data. The model's accuracy is 98.8% and its 95% C.I. is (0.9841, 0.9912). Also, the sensitivity and specificity for each outcome class are both high(>= 98%). We can conclude that the model's performance is acceptable. Let's proceed to the final step to predict the test data.
 
 Now, we load the test data 
 ```{r readtestdata, eval=FALSE}
@@ -102,7 +102,8 @@ pred_rf_test <- predict(modFit_rf, pmldata_test)
 pred_rf_test
 ```
 
-Note: We also use Conditional Inference Trees method to build our model **a. 2**, **a. 3**. The predicted outcomes are no as good as the aboves. However, its predicted test results are the same as our Random Forest based model.           
+Note: We also use Conditional Inference Trees method to build our model as in **a. 2**, **a. 3**. The model's accuracy is about 89.6% with 95% C.I. from 88.6% to 90.5%). The sensitivity of Class B, Class C and Class D are all less than 90%, though the specificity are all larger than 96%. The predicted outcomes are not as good as the above ones. However, the predicted test results are the same as the results from the Random Forest based model.  
+
 ### Appendix
 **a. 1** The main prediction model (Random Forest)
 ```{r, eval=FALSE}
